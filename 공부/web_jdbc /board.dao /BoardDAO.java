@@ -6,7 +6,6 @@ import com.webjjang.board.vo.BoardVO;
 import com.webjjang.main.dao.DAO;
 import com.webjjang.util.db.DB;
 
-
 public class BoardDAO extends DAO {
 
 	//필요한 객체 선언 - 상속 받아서 사용하자
@@ -19,13 +18,18 @@ public class BoardDAO extends DAO {
 		List<BoardVO> list = null;
 		try {
 			//1. 드라이버 확인
+			
 			//2. 연결
 			con = DB.getConnection();
-			//3. sql - 아래 list
+			
+			//3. sql - list
+			
 			//4. 실행객체 & 데이터 세팅
 			pstmt = con.prepareStatement(LIST);
+			
 			//5. 실행
 			rs = pstmt.executeQuery();
+			
 			//6. 표시 또는 담기
 			if(rs != null) {
 				while(rs.next()) {
@@ -39,7 +43,6 @@ public class BoardDAO extends DAO {
 					vo.setWriter(rs.getString("Writer"));
 					vo.setWriteDate(rs.getString("WriteDate"));
 					vo.setHit(rs.getLong("Hit"));
-					
 					//vo - > list에 담는다
 					list.add(vo);
 				} // end of while 
@@ -51,17 +54,14 @@ public class BoardDAO extends DAO {
 			//7. 닫기
 			DB.close(con, pstmt, rs);
 		}
-		
 		//결과 데이터를 리턴해 준다.
 		return list;
 	}//end of public List<BoardVO> list()
 	
 	
 	//2-1 글보기 조회수 1증가 처리
-	//1.리스트 처리
-	//BoardController -> (Execute로그 출력) -> BoardViewService -> [BoardDAO.list()]
+	//BoardController -> (Execute로그 출력) -> BoardViewService -> [BoardDAO.view()]
 	public int increase(Long no)  throws Exception{
-		
 		//결과를 저장할 수 있는 변수 선언.
 		int result = 0;
 		try {
@@ -70,7 +70,7 @@ public class BoardDAO extends DAO {
 			//2. 연결
 			con = DB.getConnection();
 			
-			//3. sql - 아래 list
+			//3. sql - increase
 			
 			//4. 실행객체 & 데이터 세팅
 			pstmt = con.prepareStatement(INCREASE);
@@ -83,7 +83,6 @@ public class BoardDAO extends DAO {
 			if(result == 0) {  //글번호가 존재하지 않는다 -> 예외로 처리한다
 				throw new Exception("예외 발생 : 글번호가 존재하지 않습니다. 글번호를 확인해 주세요");
 			}//end of if
-		
 		}catch(Exception e ) {
 			e.printStackTrace();
 			//특별한 예외는 그냥 전달한다
@@ -93,28 +92,31 @@ public class BoardDAO extends DAO {
 		}finally {	
 			//7. 닫기
 			DB.close(con, pstmt);
-		}
-		
+		}//end of finally
 		//결과 데이터를 리턴해 준다.
 		return result;
 	}// end of public int increase
 	
 	//2-2 글보기에 대한 처리
-	//1.리스트 처리
-	//BoardController -> (Execute로그 출력) -> BoardListService -> [BoardDAO.view()]
-		public BoardVO view(Long no)  throws Exception{
+	//BoardController -> (Execute로그 출력) -> BoardViewService -> [BoardDAO.view()]
+		public BoardVO view(Long no) throws Exception{
 			//결과를 저장할 수 있는 변수 선언
 			BoardVO vo = null;
 			try {
 				//1. 드라이버 확인
+				
 				//2. 연결
 				con = DB.getConnection();
-				//3. sql - 아래 list
+				
+				//3. sql - view
+				
 				//4. 실행객체 & 데이터 세팅
 				pstmt = con.prepareStatement(VIEW);
 				pstmt.setLong(1, no);
+				
 				//5. 실행
 				rs = pstmt.executeQuery();
+				
 				//6. 표시 또는 담기
 				if(rs != null && rs.next()) {
 						// rs -> vo -> list
@@ -140,12 +142,9 @@ public class BoardDAO extends DAO {
 		
 		
 	//3.글등록
-	//1.리스트 처리
-	//BoardController -> (Execute로그 출력) -> BoardViewService -> [BoardDAO.list()]
+	//BoardController -> (Execute로그 출력) -> BoardWriteService -> [BoardDAO.write()]
 	public BoardVO write(Object vo)  throws Exception{
-				
 		//결과를 저장할 수 있는 변수 선언.
-		
 		int result = 0;
 		try {
 			//1. 드라이버 확인
@@ -153,7 +152,7 @@ public class BoardDAO extends DAO {
 			//2. 연결
 			con = DB.getConnection();
 			
-			//3. sql - 아래 list
+			//3. sql - 아래 write
 			
 			//4. 실행객체 & 데이터 세팅
 			pstmt = con.prepareStatement(WRITE);
@@ -169,9 +168,7 @@ public class BoardDAO extends DAO {
 			if(result == 0) {  //글번호가 존재하지 않는다 -> 예외로 처리한다
 				throw new Exception("글등록에 실패했습니다");
 			}//end of if
-			
-	
-		}catch(Exception e ) {
+		}catch(Exception e ){
 			e.printStackTrace();
 			//특별한 예외는 그냥 전달한다
 			if(e.getMessage().indexOf("예외발생") >= 0) throw e;
@@ -181,26 +178,23 @@ public class BoardDAO extends DAO {
 			//7. 닫기
 			DB.close(con, pstmt);
 		}
-		
-		
 		//결과 데이터를 리턴해 준다.
 		return  null;
-	}// end of public int increase
+	}// end of public write
 		
-		
-			
 	//4.업데이트
-	//1.리스트 처리
-	//BoardController -> (Execute로그 출력) -> BoardListService -> [BoardDAO.view()]
+	//BoardController -> (Execute로그 출력) -> BoardUpdateService -> [BoardDAO.update()]
 	public int update (BoardVO vo)  throws Exception{
 		//결과를 저장할 수 있는 변수 선언
 		int result = 0;
-	
 		try {
 			//1. 드라이버 확인
+			
 			//2. 연결
 			con = DB.getConnection();
-			//3. sql - 아래 list
+			
+			//3. sql - 아래 update
+			
 			//4. 실행객체 & 데이터 세팅
 			pstmt = con.prepareStatement(UPDATE);
 			pstmt.setString(1, vo.getTitle());
@@ -208,13 +202,15 @@ public class BoardDAO extends DAO {
 			pstmt.setString(3, vo.getWriter());
 			pstmt.setLong(4, vo.getNo());
 			pstmt.setString(5, vo.getPw());
+			
 			//5. 실행
 			result = pstmt.executeUpdate();
+			
 			//6. 표시 또는 담기
-			if(result == 0) {	
+			if(result == 0){	
 				throw new Exception("예외 발생 : 글번호나 비밀번호가 맞지 않습니다. 정보를 확인해 주세요");
 				}//end of if
-			}catch(Exception e ) {
+			}catch(Exception e ){
 			  e.printStackTrace();
 			  throw e;
 		}finally {
@@ -222,25 +218,27 @@ public class BoardDAO extends DAO {
 			DB.close(con, pstmt, rs);	
 		//결과 데이터를 리턴해 준다.
 		return result;
-	}//end of public view
-					
-				
+	}//end of public update
+						
 	//5. 삭제
-	//1.리스트 처리
-	//BoardController -> (Execute로그 출력) -> BoardListService -> [BoardDAO.view()]
+	//BoardController -> (Execute로그 출력) -> BoardDeleteService -> [BoardDAO.delete()]
 	public int delete (BoardVO vo)  throws Exception{
 		//결과를 저장할 수 있는 변수 선언
 		int result = 0;
 	
 		try {
 			//1. 드라이버 확인
+			
 			//2. 연결
 			con = DB.getConnection();
-			//3. sql - 아래 list
+			
+			//3. sql - 아래 delete
+			
 			//4. 실행객체 & 데이터 세팅
 			pstmt = con.prepareStatement(DELETE);
 			pstmt.setLong(1, vo.getNo());
 			pstmt.setString(2, vo.getPw());
+			
 			//5. 실행
 			result = pstmt.executeUpdate();
 			//6. 표시 또는 담기
@@ -250,46 +248,37 @@ public class BoardDAO extends DAO {
 			}catch(Exception e ) {
 			  e.printStackTrace();
 			  if(e.getMessage().indexOf("예외발생") >= 0 ) throw e;
-			  
 			  else throw new Exception("에외 발생 : 게시판 글삭제 DB 처리 중 예외가 발생했씁니다");
 		}finally {
 		}//7. 닫기
 			DB.close(con, pstmt);	
 		//결과 데이터를 리턴해 준다.
 		return result;
-	}//end of public view
+	}//end of public delete
 								
-				
-
 	//실행할 쿼리를 정의해 놓은 변수 선언
 	final String LIST = " select no, title, writer, writeDate, "  
 			+ " to_char(writeDate, 'yyyy-mm-dd') writeDate, hit "
 			+ " from board "
 			+ " order by no desc ";
 	
-	
 	final String INCREASE = "update board set hit = hit + 1"
 			+ " where no = ? " ;
-	
 	
 	final String VIEW = " select no, title, content, writer, writeDate, "
 			+ " to_char(writeDate, 'yyyy-mm-dd') writeDate, hit "
 			+ " from board "
 			+ " where no = ? ";
 	
-	
 	final String WRITE = "insert into board("
 			+ "no, title, content, writer, pw)"
 			+ "values(board_seq.nextval, ?, ?, ?, ?)";
-	
 	
 	final String UPDATE = "update board set "
 			+ " title = ?, content = ?, writer = ? "
 			+ " where no = ? and pw = ? ";
 	
-	
 	final String DELETE = "delete from board "
 			+ " where no = ?  and pw = ? ";
-
-
+	
 }//end of class
