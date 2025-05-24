@@ -59,40 +59,43 @@ public class MemberDAO extends DAO {
 		return list;
 	}//end of public List<noticeVO> list()
 	
-	//2회원정보보기 처리
-	//1.리스트 처리
-	//noticeController -> (Execute로그 출력) -> noticeListService -> [noticeDAO.view()]
+	//2.회원정보보기 처리
+	//memberController -> (Execute로그 출력) -> memberViewService -> memberDAO.view()
 	public MemberVO view(String id)  throws Exception{
 		//결과를 저장할 수 있는 변수 선언
 		MemberVO vo = null;
 		try {
 			//1. 드라이버 확인
+			
 			//2. 연결
 			con = DB.getConnection();
-			//3. sql - 아래 list
+			
+			//3. sql - 아래 view
+			
 			//4. 실행객체 & 데이터 세팅
 			pstmt = con.prepareStatement(VIEW);
 			pstmt.setString(1, Main.login.getId());
+			
 			//5. 실행
 			rs = pstmt.executeQuery();
+			
 			//6. 표시 또는 담기
 			if(rs != null && rs.next()) {
-					// rs -> vo -> list
-					// list가 null이면 생성해서 저장할 수 있게 해줘야한다 
-					// rs - vo 
-					vo= new  MemberVO();
-					vo.setId(rs.getString("id"));
-					vo.setName(rs.getString("name"));
-					vo.setGender(rs.getString("gender"));
-					vo.setTel(rs.getString("tel"));
-					vo.setBirth(rs.getString("birth"));
-					vo.setEmail(rs.getString("email"));
-					vo.setRegdate(rs.getString("regDate"));
-					vo.setConDate(rs.getString("conDate"));
-					//vo.setPhoto(rs.getString("photo"));
-					vo.setGradeNo(rs.getInt("gradeNo"));
-					vo.setGradeName(rs.getString("gradeName"));
-
+				// rs -> vo -> list
+				// list가 null이면 생성해서 저장할 수 있게 해줘야한다 
+				// rs - vo 
+				vo= new  MemberVO();
+				vo.setId(rs.getString("id"));
+				vo.setName(rs.getString("name"));
+				vo.setGender(rs.getString("gender"));
+				vo.setTel(rs.getString("tel"));
+				vo.setBirth(rs.getString("birth"));
+				vo.setEmail(rs.getString("email"));
+				vo.setRegdate(rs.getString("regDate"));
+				vo.setConDate(rs.getString("conDate"));
+				//vo.setPhoto(rs.getString("photo"));
+				vo.setGradeNo(rs.getInt("gradeNo"));
+				vo.setGradeName(rs.getString("gradeName"));
 				}//end of if
 			}catch(Exception e ) {
 			  e.printStackTrace();
@@ -106,12 +109,9 @@ public class MemberDAO extends DAO {
 
 	
 	//3.회원가입
-	//1.리스트 처리
-	//MemberController -> (Execute로그 출력) -> MemberViewService -> [MemberDAO.list()]
+	//MemberController -> (Execute로그 출력) -> MemberWriteService -> [MemberDAO.write()]
 	public int write(MemberVO vo)  throws Exception{
-				
 		//결과를 저장할 수 있는 변수 선언.
-		
 		int result = 0;
 		try {
 			//1. 드라이버 확인
@@ -119,7 +119,7 @@ public class MemberDAO extends DAO {
 			//2. 연결
 			con = DB.getConnection();
 			
-			//3. sql - 아래 list
+			//3. sql - 아래 wirte
 			
 			//4. 실행객체 & 데이터 세팅
 			pstmt = con.prepareStatement(WRITE);
@@ -131,17 +131,14 @@ public class MemberDAO extends DAO {
 			pstmt.setString(6,  vo.getTel());
 			pstmt.setString(7,  vo.getEmail());
 			pstmt.setString(8,  vo.getPhoto());
-	
-	
-			
-			//5. 실행 실행 update : sxecuteUpdate() - int 결과가 나옴
+
+			//5. 실행 실행
 			result = pstmt.executeUpdate();
 			
 			//6. 표시 또는 담기
 			System.out.println();
 			System.out.println("    회원가입이 되었습니다.    ");
 			
-	
 		}catch(Exception e ) {
 			e.printStackTrace();
 			//특별한 예외는 그냥 전달한다
@@ -152,25 +149,24 @@ public class MemberDAO extends DAO {
 			//7. 닫기
 			DB.close(con, pstmt);
 		}
-		
-		
 		//결과 데이터를 리턴해 준다.
 		return  result;
-	}// end of public int increase
+	}// end of write
 		
 		
 	//4 회원정보 수정		
-	//1.리스트 처리
-	//MemberController -> (Execute로그 출력) -> MemberListService -> [MemberDAO.view()]
+	//MemberController -> (Execute로그 출력) -> MemberUpdateService -> MemberDAO.update()
 	public int update (MemberVO vo)  throws Exception {
 		//결과를 저장할 수 있는 변수 선언
 		int result = 0;
-	
 		try {
 			//1. 드라이버 확인
+			
 			//2. 연결
 			con = DB.getConnection();
-			//3. sql - 아래 list
+			
+			//3. sql - 아래 update
+			
 			//4. 실행객체 & 데이터 세팅
 			pstmt = con.prepareStatement(UPDATE);
 			pstmt.setString(1, vo.getName());
@@ -184,6 +180,7 @@ public class MemberDAO extends DAO {
 	
 			//5. 실행
 			result = pstmt.executeUpdate();
+			
 			//6. 표시 또는 담기
 			if(result == 0) {	
 				throw new Exception("예외 발생 : 글번호가 맞지 않습니다. 정보를 확인해 주세요");
@@ -191,36 +188,38 @@ public class MemberDAO extends DAO {
 			}catch(Exception e ) {
 				e.printStackTrace();
 			  if(e.getMessage().indexOf("예외 발생") >= 0) throw e;
-			  
 			  else throw new Exception("예외 발생 : 회원정보수정 DB 처리 중 예외가 발생했습니다");
 		}finally {
-		}//7. 닫기
-			DB.close(con, pstmt);	
+			//7. 닫기
+			DB.close(con, pstmt);
+		}	
 		//결과 데이터를 리턴해 준다.
 		return result;
-	}//end of public view
+	}//end of public update
 					
 	
 	//5 탈퇴
-	//5. 회원탈퇴 처리
-	//1.리스트 처리
-	//MemberController -> (Execute로그 출력) -> MemberListService -> [MemberDAO.view()]
+	//MemberController -> (Execute로그 출력) -> MemberDeleteService -> [MemberDAO.delete()]
 	public int delete (MemberVO vo)  throws Exception{
 		//결과를 저장할 수 있는 변수 선언
 		int result = 0;
-	
 		try {
 			//1. 드라이버 확인
+			
 			//2. 연결
 			con = DB.getConnection();
-			//3. sql - 아래 list
+			
+			//3. sql - 아래 delete
+			
 			//4. 실행객체 & 데이터 세팅
 			pstmt = con.prepareStatement(DELETE);
 			pstmt.setString(1, vo.getId());
 			pstmt.setString(2, vo.getPw());
 			//pstmt.setString(2, vo.getPw());
+			
 			//5. 실행
 			result = pstmt.executeUpdate();
+			
 			//6. 표시 또는 담기
 			if(result == 0) {	//아이디나 비번을 틀림
 				throw new Exception("예외 발생 : 아이디나 비밀번호가 맞지 않습니다");
@@ -228,77 +227,83 @@ public class MemberDAO extends DAO {
 			}catch(Exception e ) {
 			  e.printStackTrace();
 			  if(e.getMessage().indexOf("예외발생") >= 0 ) throw e;
-			  
 			  else throw new Exception("에외 발생 : 회원탈퇴 DB처리 중 오류 가 발생했습니다");
 		}finally {
 		}//7. 닫기
 			DB.close(con, pstmt);	
 		//결과 데이터를 리턴해 준다.
 		return result;
-	}//end of public view
+	}//end of public update
 								
 	
 	//6. 로그인처리
 	//memberController -> (Execute로그 출력) -> memberloginService -> [memberDAO.login()]
-			public LoginVO login(LoginVO loginvo)  throws Exception{
-				//결과를 저장할 수 있는 변수 선언
-				LoginVO vo = null;
-				try {
-					//1. 드라이버 확인
-					//2. 연결
-					con = DB.getConnection();
-					//3. sql - 아래 list
-					//4. 실행객체 & 데이터 세팅
-					pstmt = con.prepareStatement(LOGIN);
-					pstmt.setString(1, loginvo.getId());
-					pstmt.setString(2, loginvo.getPw());
-					//5. 실행
-					rs = pstmt.executeQuery();
-					//6. 표시 또는 담기
-					if(rs != null && rs.next()) {
-							// rs -> vo -> list
-							// list가 null이면 생성해서 저장할 수 있게 해줘야한다 
-							// rs - vo 
-							vo= new  LoginVO();
-							vo.setId(rs.getString("id"));
-							vo.setName(rs.getString("name"));
-							vo.setGradeNo(rs.getInt("gradeNo"));
-							vo.setGradeName(rs.getString("gradeName"));
-							//vo.setPhoto(rs.getString("photo"));
-							vo.setNewMsgCnt(rs.getLong("newMsgCnt"));
+		public LoginVO login(LoginVO loginvo)  throws Exception{
+			//결과를 저장할 수 있는 변수 선언
+			LoginVO vo = null;
+			try {
+				//1. 드라이버 확인
+				
+				//2. 연결
+				con = DB.getConnection();
+				
+				//3. sql - 아래 update
+				
+				//4. 실행객체 & 데이터 세팅
+				pstmt = con.prepareStatement(LOGIN);
+				pstmt.setString(1, loginvo.getId());
+				pstmt.setString(2, loginvo.getPw());
+				
+				//5. 실행
+				rs = pstmt.executeQuery();
+				
+				//6. 표시 또는 담기
+				if(rs != null && rs.next()) {
+					// rs -> vo -> list
+					// list가 null이면 생성해서 저장할 수 있게 해줘야한다 
+					// rs - vo 
+					vo= new  LoginVO();
+					vo.setId(rs.getString("id"));
+					vo.setName(rs.getString("name"));
+					vo.setGradeNo(rs.getInt("gradeNo"));
+					vo.setGradeName(rs.getString("gradeName"));
+					//vo.setPhoto(rs.getString("photo"));
+					vo.setNewMsgCnt(rs.getLong("newMsgCnt"));
 						}if(vo == null) {// 아이디와 비밀번호가 맞지가 않아서 에외처리
 							throw new Exception(" 예외 발생 : 아이디나 비밀번호가 맞지 않습니다. 정보를 학인해주세요");
 						}
 					}catch(Exception e ) {
 						  e.printStackTrace();
 						  if(e.getMessage().indexOf("예외발생") >= 0 ) throw e;
-						  
 						  else throw new Exception("에외 발생 : 로그인 DB 처리 중 예외가 발생했씁니다");
 				}finally {
-				}//7. 닫기
+					//7. 닫기
 					DB.close(con, pstmt, rs);	
+				}
 				//결과 데이터를 리턴해 준다.
 				return vo;
-			}//end of public view
+			}//end of public login
 			
-
 			//7. 최근 접속 수행 처리
-			//memberController -> (Execute로그 출력) -> MemberListService -> [MemberDAO.view()]
-			public int updateConDate (String id)  throws Exception {
+			//memberController -> (Execute로그 출력) -> MemberUpdateConDateService -> [MemberDAO.updateConDate()]
+			public int updateConDate (String id) throws Exception {
 				//결과를 저장할 수 있는 변수 선언
 				int result = 0;
-			
 				try {
 					//1. 드라이버 확인
+					
 					//2. 연결
 					con = DB.getConnection();
-					//3. sql - 아래 list
+					
+					//3. sql - 아래 updateConDate
+					
 					//4. 실행객체 & 데이터 세팅
 					pstmt = con.prepareStatement(UPDATE_CONDATE);
 					pstmt.setString(1, id);
 	
 					//5. 실행
 					result = pstmt.executeUpdate();
+					
 					//6. 표시 또는 담기
 					if(result == 0) {	
 						throw new Exception("예외 발생 : 글번호가 맞지 않습니다. 정보를 확인해 주세요");
@@ -306,14 +311,13 @@ public class MemberDAO extends DAO {
 					}catch(Exception e ) {
 						e.printStackTrace();
 					  if(e.getMessage().indexOf("예외 발생") >= 0) throw e;
-					  
 					  else throw new Exception("예외 발생 : 최근접속일 수정  DB 처리 중 예외가 발생했습니다");
 				}finally {
 				}//7. 닫기
 					DB.close(con, pstmt);	
 				//결과 데이터를 리턴해 준다.
 				return result;
-			}//end of public view
+			}//end of public updateConDate
 									
 			
 	//실행할 쿼리를 정의해 놓은 변수 선언
@@ -323,10 +327,10 @@ public class MemberDAO extends DAO {
 			+ " order by id desc";  //1차 정렬 2차 정렬
 	
 	final String VIEW = "SELECT m.id, m.name, m.gender,  to_char(m.birth, 'yyyy-mm-dd') birth , m.tel, m.email, " 
-            + "TO_CHAR(m.regDate, 'yyyy-mm-dd') AS regDate, " 
-            + "TO_CHAR(m.conDate, 'yyyy-mm-dd') AS conDate, m.gradeNo, g.gradeName " 
-            + "FROM member m, grade g" 
-            + " where (m.gradeNo = g.gradeNo) and (id = ?)";
+			+ "TO_CHAR(m.regDate, 'yyyy-mm-dd') AS regDate, " 
+			+ "TO_CHAR(m.conDate, 'yyyy-mm-dd') AS conDate, m.gradeNo, g.gradeName " 
+			+ "FROM member m, grade g" 
+			+ " where (m.gradeNo = g.gradeNo) and (id = ?)";
             
 	final String WRITE = "insert into member"
 			+ "(id, pw, name, gender, birth, tel, email, photo )"
@@ -347,6 +351,5 @@ public class MemberDAO extends DAO {
 	
 	final String UPDATE_CONDATE = "update member "
 			+ " set conDate = sysdate shere id = ? ";
-
 	
 }//end of class
