@@ -14,8 +14,6 @@ import com.webjjang.util.db.DB;
 public class MemberDAO extends DAO {
 
 	private long no;
-
-
 	//필요한 객체 선언 - 상속 받아서 사용하자
 	// 접속 정보 - DB 사용 - connection를 가져오게 하는 메서드
 	
@@ -60,7 +58,7 @@ public class MemberDAO extends DAO {
 		return list;
 	}//end of public List<noticeVO> list()
 	
-	//2-2 회원정보보기 처리
+	//2회원정보보기 처리
 	//1.리스트 처리
 	//noticeController -> (Execute로그 출력) -> noticeListService -> [noticeDAO.view()]
 	public MemberVO view(String id)  throws Exception{
