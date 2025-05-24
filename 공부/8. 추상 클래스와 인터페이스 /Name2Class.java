@@ -11,5 +11,4 @@ public class Name2Class extends AbstractClass {
 		System.out.println("** 이름 : " + name + " **");
 		System.out.println("*****************");
 	}
-
 }
