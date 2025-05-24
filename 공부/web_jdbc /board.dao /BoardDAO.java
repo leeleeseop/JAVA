@@ -53,7 +53,7 @@ public class BoardDAO extends DAO {
 		}finally {	
 			//7. 닫기
 			DB.close(con, pstmt, rs);
-		}
+		}//end of finally
 		//결과 데이터를 리턴해 준다.
 		return list;
 	}//end of public List<BoardVO> list()
@@ -225,7 +225,6 @@ public class BoardDAO extends DAO {
 	public int delete (BoardVO vo)  throws Exception{
 		//결과를 저장할 수 있는 변수 선언
 		int result = 0;
-	
 		try {
 			//1. 드라이버 확인
 			
@@ -241,6 +240,7 @@ public class BoardDAO extends DAO {
 			
 			//5. 실행
 			result = pstmt.executeUpdate();
+			
 			//6. 표시 또는 담기
 			if(result == 0) {	//글번호가 존재하지 않거나 비번 틀림 -> 예외로 처리한다 
 				throw new Exception("예외 발생 : 글번호나 비밀번호가 맞지 않습니다. 정보를 확인해 주세요");
