@@ -1,3 +1,7 @@
+/*
+	공지사항 업데이트 기능 서비스
+*/
+
 package com.webjjang.notice.service;
 
 import com.webjjang.notice.dao.NoticeDAO;
@@ -8,7 +12,6 @@ public class NoticeUpdateService implements Service {
 
 	@Override
 	public Integer service(Object obj) throws Exception {
-		
 		//DB 처리는 DAO에서 처리 NoticeDAO.update()
 		//NoticeController -> (Execute로그 출력) -> NoticeUpdateService -> [NoticeDAO.update()]
 		return new NoticeDAO().update((NoticeVO)obj);
