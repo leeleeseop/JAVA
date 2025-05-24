@@ -8,8 +8,8 @@ public class MemberLoginService implements Service {
 
 	@Override
 	public LoginVO service(Object obj) throws Exception {
-		// DB 처리는 DAO에서 처리 - MemberDAO.view() : obj == no
-		// MemberController - (Execute) - [MemberLoginService] - MemberDAO.view()
+		// DB 처리는 DAO에서 처리 - MemberDAO.login()
+		// MemberController - (Execute) - [MemberLoginService] - MemberDAO.login()
 		return new MemberDAO().login((LoginVO)obj);
   }
 }
