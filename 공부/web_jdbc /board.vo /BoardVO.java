@@ -62,13 +62,10 @@ public class BoardVO {
 		this.pw = pw;
 	}
 	
-	
 	//toString - 데이터 확인용
 	@Override
 	public String toString() {
 		return "BoardVO [no=" + no + ", title=" + title + ", writer=" + writer + ", writeDate=" + writeDate + ", hit="
 				+ hit + ", pw=" + pw + "]";
 	}
-
-	
 }
