@@ -1,11 +1,11 @@
 package com.webjjang.member.service;
 
 import java.util.List;
-
 import com.webjjang.main.service.Service;
 import com.webjjang.member.dao.MemberDAO;
 import com.webjjang.member.vo.MemberVO;
 
+//회원 상세정보 조회 서비스
 public class MemberViewService implements Service {
 
 	@Override
@@ -18,5 +18,6 @@ public class MemberViewService implements Service {
 		//MemberController -> (Execute로그 출력) -> MemberViewService -> [MemberDAO.view()]
 		//if(inc == 1) newdao.increase(no);
 		//return new MemberDAO().view((String)obj);
-	}
-}
+	}//end of public MemberVO
+	
+}//end of class
