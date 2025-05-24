@@ -2,7 +2,6 @@ package com.webjjang.member.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.webjjang.notice.vo.NoticeVO;
 import com.webjjang.main.controller.Main;
 import com.webjjang.main.dao.DAO;
@@ -20,32 +19,34 @@ public class MemberDAO extends DAO {
 	//1.리스트 처리
 	//MemberController -> (Execute로그 출력) -> MemberListService -> [MemberDAO.list()]
 	public List<MemberVO> list() throws Exception{
-		
-		//결과를 저장할 수 있는 변수 선언
-		 List<MemberVO> list = new ArrayList<>();
-		
-		try {
-			
+	//결과를 저장할 수 있는 변수 선언
+	List<MemberVO> list = new ArrayList<>();
+	try {
 			//1. 드라이버 확인
+		
 			//2. 연결
 			con = DB.getConnection();
+		
 			//3. sql - 아래 list
+		
 			//4. 실행객체 & 데이터 세팅
 			pstmt = con.prepareStatement(LIST);
+		
 			//5. 실행
 			rs = pstmt.executeQuery();
+		
 			//6. 표시 또는 담기
 			//if(rs != null) {
-				 while (rs.next()) {
-			            MemberVO vo = new MemberVO();
-			            vo.setId(rs.getString("id"));
-			            vo.setName(rs.getString("name"));
-			            vo.setBirth(rs.getString("birth"));
-			            vo.setTel(rs.getString("tel"));
-			            vo.setGradeName(rs.getString("gradeName"));
-			            vo.setStatus(rs.getString("status"));
-			            list.add(vo);
-			        }
+				while (rs.next()) {
+					MemberVO vo = new MemberVO();
+					vo.setId(rs.getString("id"));
+					vo.setName(rs.getString("name"));
+					vo.setBirth(rs.getString("birth"));
+					vo.setTel(rs.getString("tel"));
+					vo.setGradeName(rs.getString("gradeName"));
+					vo.setStatus(rs.getString("status"));
+					list.add(vo);
+				}
 			//}//end of if
 		}catch(Exception e ) {
 			e.printStackTrace();
