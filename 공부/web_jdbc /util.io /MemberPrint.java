@@ -5,7 +5,7 @@ import com.webjjang.board.vo.BoardVO;
 import com.webjjang.member.vo.MemberVO;
 
 public class MemberPrint {
-	//게시판 리스트  출력메서드 
+	//회원리스트  출력메서드 
 	public void print(List<MemberVO> list) {
 		System.out.println();
 		System.out.println("<<-------------회원리스트 ----------->>>");
@@ -36,7 +36,7 @@ public class MemberPrint {
 		System.out.println("<<----------------------------------------------->>>");
 	}//end of public void print
 	
-	//게시판 글보기  출력메서드 
+	//회원정보  출력메서드 
 	public void print(MemberVO vo) {
 		System.out.println();
 		System.out.println("<<------------- 회원정보 보기 ----------->>>");
