@@ -25,9 +25,9 @@ public class Main {
 			+ ")남은 ");
 			System.out.println("// " + login.getGradeName()+"-" + login.getGradeNo() + "(으)로 로그인 되었습니다.");
 			System.out.println("// 당신에게 온 메시지는" + login.getNewMsgCnt() + "개 입니다");
-		}		
+		}//end of else		
 		System.out.println("/////////////////////////////////");
-	}
+	}//end of public static void loginInto
 
 	//프로젝트 시작되는 지점.
 	public static void main(String[] args) throws ClassNotFoundException {
