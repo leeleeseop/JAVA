@@ -14,8 +14,8 @@ public class MemberViewService implements Service {
         // MemberDAO의 view 메서드 호출하여 결과를 반환
         return new MemberDAO().view((String)obj);
 		//DB Member에서 리스트 쿼리 실행해서 데이터 가져오기 - 리턴
-		//DB 처리는 DAO에서 처리 MemberDAO.list()
-		//MemberController -> (Execute로그 출력) -> MemberViewService -> [MemberDAO.list()]
+		//DB 처리는 DAO에서 처리 MemberDAO.view()
+		//MemberController -> (Execute로그 출력) -> MemberViewService -> [MemberDAO.view()]
 		//if(inc == 1) newdao.increase(no);
 		//return new MemberDAO().view((String)obj);
 	}
