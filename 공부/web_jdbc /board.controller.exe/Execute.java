@@ -1,7 +1,6 @@
 package com.webjjang.board.controller.exe;
 
 import java.util.Arrays;
-
 import com.webjjang.main.controller.Main;
 import com.webjjang.main.service.Service;
 
@@ -31,8 +30,7 @@ public class Execute {
 		// 넘어오는 데이터 출력
 		// 배열인지 물어보자 : obj instanceof Object[]
 		// 배열이면 배열 출력하는 Arrays.toString() 사용하고 아니면 obj를 그냥 출력한다.
-		System.out.println("넘어가는 데이터 : " 
-				+ ((obj instanceof Object[])?Arrays.toString((Object[])obj):obj));
+		System.out.println("넘어가는 데이터 : " + ((obj instanceof Object[])?Arrays.toString((Object[])obj):obj));
 		
 		// service를 실행한다.
 		result = service.service(obj);
@@ -44,16 +42,15 @@ public class Execute {
 		Long end = System.nanoTime();
 		// 실행시간 출력 (끝나는 시간 - 시작 시간)
 		System.out.println("실행 시간(ns) : " + (end - start));
-		
 		System.out.println("-------------------------------------------------------");
 		
 		// 최근 접속일 수정 - 로그인이 되어 있는 경우만
 		if(Main.login != null) {
 			//new MemberConUpdateService().service(Main.login.getId());
-		}
+		}//end of if
 		
 		// 처리된 결과를 리턴한다.
 		return result;
-	}
-	
-}
+		
+	}//end of public static Object
+}//end of class
