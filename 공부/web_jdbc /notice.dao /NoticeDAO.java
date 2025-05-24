@@ -2,17 +2,12 @@ package com.webjjang.notice.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.webjjang.notice.vo.NoticeVO;
 import com.webjjang.main.dao.DAO;
 import com.webjjang.util.db.DB;
 
-
 public class NoticeDAO extends DAO {
-
 	private long no;
-
-
 	//필요한 객체 선언 - 상속 받아서 사용하자
 	// 접속 정보 - DB 사용 - connection를 가져오게 하는 메서드
 	
@@ -23,13 +18,18 @@ public class NoticeDAO extends DAO {
 		List<NoticeVO> list = null;
 		try {
 			//1. 드라이버 확인
+			
 			//2. 연결
 			con = DB.getConnection();
+			
 			//3. sql - 아래 list
+			
 			//4. 실행객체 & 데이터 세팅
 			pstmt = con.prepareStatement(LIST);
+			
 			//5. 실행
 			rs = pstmt.executeQuery();
+			
 			//6. 표시 또는 담기
 			if(rs != null) {
 				while(rs.next()) {
@@ -58,23 +58,26 @@ public class NoticeDAO extends DAO {
 		return list;
 	}//end of public List<noticeVO> list()
 	
-	
-
-	//2글보기에 대한 처리
+	//2.글보기에 대한 처리
 	//noticeController -> (Execute로그 출력) -> noticeViewService -> [noticeDAO.view()]
     public NoticeVO view(Long no)  throws Exception{
       //결과를 저장할 수 있는 변수 선언
       NoticeVO vo = null;
       try {
         //1. 드라이버 확인
+				
         //2. 연결
         con = DB.getConnection();
-        //3. sql - 아래 list
+				
+        //3. sql - 아래 view
+				
         //4. 실행객체 & 데이터 세팅
         pstmt = con.prepareStatement(VIEW);
         pstmt.setLong(1, no);
+				
         //5. 실행
         rs = pstmt.executeQuery();
+				
         //6. 표시 또는 담기
         if(rs != null && rs.next()) {
             // rs -> vo -> list
@@ -98,9 +101,7 @@ public class NoticeDAO extends DAO {
       //결과 데이터를 리턴해 준다.
       return vo;
     }//end of public view
-		
-		
-		
+	
 	//3.글등록
 	//noticeController -> (Execute로그 출력) -> noticewriteService -> [noticeDAO.write()]
 	public NoticeVO write(Object vo)  throws Exception{
@@ -108,21 +109,25 @@ public class NoticeDAO extends DAO {
     int result = 0;
     try {
       //1. 드라이버 확인
+			
       //2. 연결
       con = DB.getConnection();
-      //3. sql - 아래 list
+			
+      //3. sql - 아래 write
+			
       //4. 실행객체 & 데이터 세팅
       pstmt = con.prepareStatement(WRITE);
       pstmt.setString(1, ((NoticeVO) vo).getTitle());
       pstmt.setString(2, ((NoticeVO) vo).getContent());
       pstmt.setString(3, ((NoticeVO) vo).getStartDate());
       pstmt.setString(4, ((NoticeVO) vo).getEndDate());
+			
       //5. 실행 실행 update : sxecuteUpdate() - int 결과가 나옴
       result = pstmt.executeUpdate();
+			
       //6. 표시 또는 담기
       System.out.println();
       System.out.println("*** 공지 등록이 완료 되었습니다.");
-  
     }catch(Exception e ) {
       e.printStackTrace();
       //특별한 예외는 그냥 전달한다
@@ -135,7 +140,7 @@ public class NoticeDAO extends DAO {
     }
     //결과 데이터를 리턴해 준다.
     return  null;
-  }// end of public int increase
+  }// end of public NoticeVO write
 		
 		
 			
@@ -146,9 +151,12 @@ public class NoticeDAO extends DAO {
     int result = 0;
     try {
       //1. 드라이버 확인
+			
       //2. 연결
       con = DB.getConnection();
-      //3. sql - 아래 list
+			
+      //3. sql - 아래 update
+		
       //4. 실행객체 & 데이터 세팅
       pstmt = con.prepareStatement(UPDATE);
       pstmt.setString(1, vo.getTitle());
@@ -156,8 +164,10 @@ public class NoticeDAO extends DAO {
       pstmt.setString(3, vo.getStartDate());
       pstmt.setString(4, vo.getEndDate());
       pstmt.setLong(5, vo.getNo());
+			
       //5. 실행
       result = pstmt.executeUpdate();
+			
       //6. 표시 또는 담기
       if(result == 0) {	
         throw new Exception("예외 발생 : 글번호가 맞지 않습니다. 정보를 확인해 주세요");
@@ -166,13 +176,13 @@ public class NoticeDAO extends DAO {
         e.printStackTrace();
         throw e;
     }finally {
-    }//7. 닫기
+    	//7. 닫기
       DB.close(con, pstmt, rs);	
+		}
     //결과 데이터를 리턴해 준다.
     return result;
   }//end of public update
-					
-				
+							
 	//5. 삭제
 	//noticeController -> (Execute로그 출력) -> noticeDeleteService -> [noticeDAO.delete()]
 	public int delete (Long no)  throws Exception{
@@ -180,15 +190,20 @@ public class NoticeDAO extends DAO {
     int result = 0;
     try {
       //1. 드라이버 확인
+			
       //2. 연결
       con = DB.getConnection();
-      //3. sql - 아래 list
+			
+      //3. sql - 아래 delete
+			
       //4. 실행객체 & 데이터 세팅
       pstmt = con.prepareStatement(DELETE);
       pstmt.setLong(1, no);
       //pstmt.setString(2, vo.getPw());
+			
       //5. 실행
       result = pstmt.executeUpdate();
+			
       //6. 표시 또는 담기
       if(result == 0) {	//글번호가 존재하지 않거나 비번 틀림 -> 예외로 처리한다 
         throw new Exception("예외 발생 : 글번호가 맞지 않습니다. 정보를 확인해 주세요");
@@ -196,17 +211,15 @@ public class NoticeDAO extends DAO {
       }catch(Exception e ) {
         e.printStackTrace();
         if(e.getMessage().indexOf("예외발생") >= 0 ) throw e;
-        
         else throw new Exception("에외 발생 : 게시판 글삭제 DB 처리 중 예외가 발생했씁니다");
     }finally {
-    }//7. 닫기
-      DB.close(con, pstmt);	
+	    //7. 닫기
+			DB.close(con, pstmt);	
+		}
     //결과 데이터를 리턴해 준다.
     return result;
   }//end of public delete
 								
-				
-
 	//실행할 쿼리를 정의해 놓은 변수 선언
 	final String LIST = "select no, title, "
 			+ " to_char(startDate, 'yyyy-mm-dd') startDate, "
