@@ -9,7 +9,6 @@ public class BoardIncreaseVO {
     // 조회수
     private Long hit;
 
-    
     // setter, getter
     public Long getNo() {
         return no;
