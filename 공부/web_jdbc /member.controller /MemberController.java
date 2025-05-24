@@ -1,7 +1,6 @@
 package com.webjjang.member.controller;
 
 import java.util.List;
-
 import com.webjjang.main.controller.Main;
 import com.webjjang.member.service.MemberConUpdateService;
 import com.webjjang.member.service.MemberDeleteService;
@@ -28,16 +27,15 @@ public class MemberController {
 	public void  excute( ) {
 		//게시판 기능무한 반복
 		while(true) {
-			
 			Main.loginInto();
 			System.out.println();
 			System.out.println("               회원관리               ");
+			
 			//메뉴 출력 - 리스트, 글보기. 글등록, 글수정, 글삭제
 			System.out.println("********************************");
 			System.out.println("**1.회원리스트, 2.회원정보보기, 3.회원가입**");
 			System.out.println("**4.정보수정, 5.회원탈퇴, 6."+((Main.login == null)?"로그인":"로그아웃")+"**");
 			System.out.println("********************************");
-			
 			Object result = null;
 			
 			//메뉴입력
@@ -51,8 +49,7 @@ public class MemberController {
 			try {
 				//메뉴처리 : CRUD DB 처리 - Controller - Service - DAO
 				switch (menu) {
-				
-
+		
 				case "1":
 					//[NoticeController] - (Execute) - NoticeListService - NoticeDAO.list()
 					System.out.println("1.회원 리스트");
@@ -75,7 +72,7 @@ public class MemberController {
 					//게시판 글보기 출력 : NoticePrint
 					new MemberPrint().print((MemberVO)result);
 					break;
-
+						
 				case "3":
 					System.out.println("3.회원가입");			
 					// 데이터 수집 - 사용자 : 아이디, 비밀번호, 이름, 성별, 생년월일, 연락처, 이메일, 사진
@@ -87,6 +84,7 @@ public class MemberController {
 					String tel = In.getStr("연락처");
 					String email = In.getStr("이메일");
 					String photo= In.getStr("사진");
+					
 					//변수로 만든것을 vo로 저장하고 Service
 					MemberVO vo = new MemberVO();
 					vo.setId(id);
@@ -122,12 +120,11 @@ public class MemberController {
 					//데이터 수집 - db에서 실행에 필요한 데이터 - 글번호 비밀번호 - NoticeVO
 					id = In.getStr("아이디");
 					pw = In.getStr("비밀번호");
-					
 					vo = new MemberVO();
 					vo.setId(id);
 					vo.setPw(pw);
 					
-					//DB 처리 - 탈ㄹ퇴 
+					//DB 처리 - 탈퇴 
 					Execute.execute(new MemberDeleteService(), vo);
 					
 					//로그아웃
@@ -151,10 +148,8 @@ public class MemberController {
 					loginVO.setId(id);
 					loginVO.setPw(pw);
 					
-					
 					//db처리 & 로그인 처리
-					Main.login
-					= (LoginVO) Execute.execute(new MemberLoginService(), loginVO);
+					Main.login = (LoginVO) Execute.execute(new MemberLoginService(), loginVO);
 					System.out.println();
 					System.out.println("****************************************");
 					System.out.println("로그인이 되었습니다.");
@@ -164,7 +159,7 @@ public class MemberController {
 					if(Main.login != null) {
 						new MemberConUpdateService().service(Main.login.getId());
 					}
-					
+		
 					} else {
 						//로그인 처리
 						Main.login = null;
@@ -196,8 +191,8 @@ public class MemberController {
 				System.out.println("조치 : 데이터를 확인 후 다시 실행해 보세요.");
 				System.out.println("    : 계속 오류가 나면 전산담당자에게 연락하세요.");			
 				System.out.println("%$#$%$#%#%#%$#$%#%$%$#%$#%#%$#%#%#%#%$#%#%$#%#%%$");
-			}
-		}// end of while
+			}//end of catch
+		}//end of while
 	}//end of public
 	
 	// call by reference -> 주소가 전달된다 안에서 변경하면 밖에서도 변경이 된다
@@ -236,28 +231,23 @@ public class MemberController {
 					vo.setPhoto(In.getStr("사진"));
 					break;
 				}
-
 				case "9" : {
 					System.out.println();
 					System.out.println("**** 수정이 최소 되었습니다****");
 					return;
 				}
-					
 				case "0" : {
-					
 					//본인확인용 비밀번호 찾기	
 					vo.setPw(In.getStr("본인 확인용 비밀번호"));
 					Execute.execute(new MemberUpdateService(), vo);
 					return;
-					
 				}
 				default:
 					System.out.println("*************************");
 					System.out.println("** 잘못된 항목 번호 선택하셨습니다");
 					System.out.println("** [1~3, 9, 0]번호를 선택하세요");
 					System.out.println("*************************");
-			}
+			}//end of switch
 		}//end of while
-		// DB에 데이터 수정하기 - NoticeUpdateService
-	}
+	}//end of private void update
 }//end of class
