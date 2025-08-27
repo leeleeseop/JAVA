@@ -1,0 +1,7 @@
+public class Car {
+
+	// 필드 선언
+	String model; 		// 자동차 모델 - 고유 데이터
+	boolean engineOn;	// 엔진 상태 (기본값 false) - 상태 데이터
+	int speed;  		// 현재 속도 - 상태 데이터
+}
